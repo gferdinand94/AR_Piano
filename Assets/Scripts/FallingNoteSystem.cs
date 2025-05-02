@@ -30,12 +30,15 @@ public class FallingNoteSystem : MonoBehaviour
     public Transform[] keyPositions; // Array of key positions (assign in Inspector)
     public List<NoteEvent> noteEvents = new List<NoteEvent>();
     public float noteSpeed = 0.5f; // Fall speed in meters/second
-    public Transform pianoRoot;
+    //public Transform pianoRoot;
+    public static Transform pianoRoot;
 
     private float songStartTime;
 
     void Start()
     {
+        pianoRoot = GameObject.FindWithTag("PianoRoot").transform;
+
         Console.WriteLine(Application.dataPath);
         blackKeys = new HashSet<int>() 
         { 
@@ -125,8 +128,10 @@ public class FallingNoteSystem : MonoBehaviour
         }
 
         Transform key = keyPositions[note.midiNoteNumber];
-        Vector3 spawnPos = key.position + new Vector3(0, 5.0f, 0); // Spawn above key
-        Vector3 spawnIndicator = key.position + new Vector3(0, 0.1f, 0.4f);
+        //Vector3 spawnPos = key.position + new Vector3(0, 5.0f, 0); // Spawn above key
+        Vector3 spawnPos = key.position + key.up * 5.0f;
+        //Vector3 spawnIndicator = key.position + new Vector3(0, 0.1f, 0.4f);
+        Vector3 spawnIndicator = key.position + (key.up * 0.1f) + (key.forward * 0.4f);
         Quaternion indicatorRotate = Quaternion.Euler(90f, 0, 0);
 
         //GameObject fallingNote;
@@ -139,12 +144,17 @@ public class FallingNoteSystem : MonoBehaviour
             GameObject indicator = Instantiate(indicatorPrefabWhite, spawnIndicator, Quaternion.Euler(90f, 0, 0), pianoRoot);
             indicator.AddComponent<IndicatorNote>().Init(fallingNote.transform);
 
+            fallingNote.transform.rotation = Quaternion.Inverse(pianoRoot.rotation);
+
         }
         else
         {
             GameObject fallingNote = Instantiate(fallingNotePrefabBlack, spawnPos, Quaternion.identity, pianoRoot);
             fallingNote.AddComponent<FallingNoteMover>().Init(note.duration, noteSpeed);
+            fallingNote.transform.rotation = Quaternion.Inverse(pianoRoot.rotation);
+
         }
+
 
         //GameObject fallingNote = Instantiate(fallingNotePrefabWhite, spawnPos, Quaternion.identity, pianoRoot);
         //fallingNote.AddComponent<FallingNoteMover>().Init(note.duration, noteSpeed);
@@ -171,9 +181,10 @@ public class FallingNoteSystem : MonoBehaviour
         public void Init(float duration, float fallSpeed)
         {
             lifetime = duration;
-            speed = fallSpeed;
+            speed = fallSpeed; // * 0.1f;
 
             lengthY = duration * 0.01f;
+
         }
 
         void Update()
@@ -181,8 +192,10 @@ public class FallingNoteSystem : MonoBehaviour
             Vector3 currentScale = transform.localScale;
             currentScale.y = lengthY;
             transform.localScale = currentScale;
+            transform.rotation = pianoRoot.rotation;
 
-            transform.position += Vector3.down * speed * Time.deltaTime;
+            //transform.position += Vector3.down * speed * Time.deltaTime;
+            transform.position += pianoRoot.up * -speed * Time.deltaTime;
 
             // Get length of half of note
             float noteTopEdge = transform.localPosition.y + (lengthY / 2.0f);
@@ -205,6 +218,7 @@ public class FallingNoteSystem : MonoBehaviour
         }
         void Update()
         {
+            transform.rotation = pianoRoot.rotation * Quaternion.Euler(90f, 0, 0);
             if (indicator.localPosition.y < 0.25f)
                 gameObject.GetComponent<Renderer>().enabled = true;
 
