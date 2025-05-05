@@ -129,10 +129,11 @@ public class FallingNoteSystem : MonoBehaviour
 
         Transform key = keyPositions[note.midiNoteNumber];
         //Vector3 spawnPos = key.position + new Vector3(0, 5.0f, 0); // Spawn above key
-        //Vector3 spawnPos = key.position + key.up * 5.0f;
-        Vector3 spawnPos = key.position - key.forward * 5.0f;
-        //Vector3 spawnIndicator = key.position + new Vector3(0, 0.1f, 0.4f);
-        Vector3 spawnIndicator = key.position + (key.up * 0.1f) + (key.forward * 0.4f);
+
+        Vector3 spawnPos = key.position + key.up * 5.0f;
+        //Vector3 spawnPos = key.position - key.forward * 5.0f;
+        Vector3 spawnIndicator = key.position + new Vector3(0, 0.1f, 0.4f);
+        //Vector3 spawnIndicator = key.position + (key.up * 0.1f) + (key.forward * 0.4f);
         Quaternion indicatorRotate = Quaternion.Euler(90f, 0, 0);
 
         //GameObject fallingNote;
@@ -196,15 +197,15 @@ public class FallingNoteSystem : MonoBehaviour
             transform.rotation = pianoRoot.rotation;
 
             //transform.position += Vector3.down * speed * Time.deltaTime;
-            //transform.position += pianoRoot.up * -speed * Time.deltaTime;
-            transform.position += pianoRoot.forward * speed * Time.deltaTime;
+            transform.position += pianoRoot.up * -speed * Time.deltaTime;
+            //transform.position += pianoRoot.forward * speed * Time.deltaTime;
 
             // Get length of half of note
-            //float noteTopEdge = transform.localPosition.y + (lengthY / 2.0f);
-            float noteTopEdge = transform.localPosition.z + (lengthY / 2.0f);
+            float noteTopEdge = transform.localPosition.y + (lengthY / 2.0f);
+            //float noteTopEdge = transform.localPosition.z + (lengthY / 2.0f);
 
-            //if (noteTopEdge < -0.01f)
-            if (transform.localPosition.z > 0.01f)
+            if (noteTopEdge < -0.01f)
+                //if (transform.localPosition.z > 0.01f)
                 Destroy(gameObject);
                 //Destroy(gameObject);
             lifetime -= Time.deltaTime;
@@ -224,12 +225,12 @@ public class FallingNoteSystem : MonoBehaviour
         void Update()
         {
             transform.rotation = pianoRoot.rotation * Quaternion.Euler(90f, 0, 0);
-            //if (indicator.localPosition.y < 0.25f)
-            if (indicator.localPosition.z > -0.25f)
-                    gameObject.GetComponent<Renderer>().enabled = true;
+            if (indicator.localPosition.y < 0.25f)
+                //if (indicator.localPosition.z > -0.25f)
+                gameObject.GetComponent<Renderer>().enabled = true;
 
-            //if (indicator.localPosition.y < 0.0f)
-            if (indicator.localPosition.z > 0.0f)
+            if (indicator.localPosition.y < 0.0f)
+                //if (indicator.localPosition.z > 0.0f)
                 Destroy(gameObject);
         }
     }
