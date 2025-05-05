@@ -14,11 +14,11 @@ public class AlignPiano : MonoBehaviour
 
     // Setting the values of the buffers for the min and max values for position, rotation, and scale of the model within the sliders.
     // These values seem to be the ideal values, but can be adjusted in the inspector.
-    public float xPosBuffer = 5.0f;
-    public float yPosBuffer = 5.0f;
-    public float zPosBuffer = 5.0f;
-    public float rotateBuffer = 15.0f;
-    public float scaleBuffer = 3.0f;
+    public float xPosBuffer = 10.0f;
+    public float yPosBuffer = 10.0f;
+    public float zPosBuffer = 10.0f;
+    public float rotateBuffer = 30.0f;
+    public float scaleBuffer = 6.0f;
 
     // Start is called before the first frame update
     void Start()

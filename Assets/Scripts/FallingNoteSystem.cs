@@ -9,7 +9,8 @@ using Unity.VisualScripting;
 
 public class FallingNoteSystem : MonoBehaviour
 {
-    private MidiFile midiFile = MidiFile.Read("C:\\Users\\gferd\\CS 595\\Project Prototyping\\test.mid");
+    //private MidiFile midiFile = MidiFile.Read("C:\\Users\\gferd\\CS 595\\Project Prototyping\\test.mid");
+    private MidiFile midiFile = MidiFile.Read(Application.dataPath + "\\midi\\tetris.mid");
     [System.Serializable]
     public class NoteEvent
     {
@@ -90,7 +91,7 @@ public class FallingNoteSystem : MonoBehaviour
             float length = (float)durationMetric;
 
             //noteEvents.Add(new NoteEvent { midiNoteNumber = note.NoteNumber - corrector, startTime = startTime * 5.0f, duration = duration * 10.0f });
-            noteEvents.Add(new NoteEvent { midiNoteNumber = note.NoteNumber - corrector, startTime = startTime * 5.0f, duration = duration * 10.0f, length = length });
+            noteEvents.Add(new NoteEvent { midiNoteNumber = note.NoteNumber - corrector, startTime = startTime * 3.0f, duration = duration * 10.0f, length = length });
 
         }
 
@@ -185,7 +186,7 @@ public class FallingNoteSystem : MonoBehaviour
             lifetime = duration;
             speed = fallSpeed; // * 0.1f;
 
-            lengthY = duration * 0.01f;
+            lengthY = duration * 0.05f;
 
         }
 
