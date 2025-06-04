@@ -26,6 +26,7 @@ public class FullPianoKeyGenerator : MonoBehaviour
     void Start()
     {
         GenerateKeyboard();
+        int p = 0;
     }
 
     void GenerateKeyboard()
